@@ -18,9 +18,9 @@ function resolveOptions(webpackInstance) {
     : null;
 
   var options = {
-     formatter: 'custom',
-     formattersDirectory: __dirname + '/formatters/',
-     configuration: Lint.Linter.findConfiguration(configFile, webpackInstance.resourcePath).results
+    formatter: 'custom',
+    formattersDirectory: __dirname + '/formatters/',
+    configuration: Lint.Linter.findConfiguration(configFile, webpackInstance.resourcePath).results
   };
 
   objectAssign(options, tslintOptions);
@@ -33,7 +33,12 @@ function resolveOptions(webpackInstance) {
 }
 
 function lint(webpackInstance, input, options) {
-  var newLintOptions = { fix: false, formatter: 'custom', formattersDirectory: __dirname + '/formatters/', rulesDirectory: '' };
+  var newLintOptions = {
+    fix: options.fix || false,
+    formatter: options.formatter || 'custom',
+    formattersDirectory: options.formattersDirectory || __dirname + '/formatters/',
+    rulesDirectory: options.rulesDirectory || options.configuration.rulesDirectory || ''
+  };
   var bailEnabled = (webpackInstance.options.bail === true);
 
   var program;
